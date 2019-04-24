@@ -7,6 +7,7 @@ using osu.Game.Rulesets.Objects;
 using osuTK;
 using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Beatmaps.ControlPoints;
+using osu.Game.Online.Websocket;
 
 namespace osu.Game.Rulesets.Osu.Objects
 {
@@ -61,6 +62,8 @@ namespace osu.Game.Rulesets.Osu.Objects
         public virtual int IndexInCurrentCombo { get; set; }
 
         public virtual int ComboIndex { get; set; }
+
+        public bool IsApplicableForLocalTagPlayer => ComboIndex % TagModManager.Instance.PlayersMax == TagModManager.Instance.ThisPlayerNum;
 
         public bool LastInCombo { get; set; }
 

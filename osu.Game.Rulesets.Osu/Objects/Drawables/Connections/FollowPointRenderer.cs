@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using osuTK;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Game.Rulesets.Objects.Types;
+using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Osu.Objects.Drawables.Connections
 {
@@ -98,6 +100,10 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables.Connections
                             Alpha = 0,
                             Scale = new Vector2(1.5f),
                         });
+
+                        // TAG
+                        if (!currHitObject.IsApplicableForLocalTagPlayer)
+                            fp.Colour = ColourInfo.SingleColour(new SRGBColour() { Linear = new Color4(255, 255, 255, 70) });
 
                         using (fp.BeginAbsoluteSequence(fadeInTime))
                         {

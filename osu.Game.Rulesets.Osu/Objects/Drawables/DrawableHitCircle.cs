@@ -5,6 +5,7 @@ using System;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Osu.Objects.Drawables.Pieces;
@@ -40,6 +41,9 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables
             Origin = Anchor.Centre;
 
             Position = HitObject.StackedPosition;
+
+            if (!HitObject.IsApplicableForLocalTagPlayer)
+                Colour = ColourInfo.SingleColour(new SRGBColour() { Linear = new Color4(255, 255, 255, 70) });
 
             InternalChildren = new Drawable[]
             {
@@ -115,6 +119,18 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables
 
         protected override void CheckForResult(bool userTriggered, double timeOffset)
         {
+            /*
+            if (!HitObject.IsApplicableForLocalTagPlayer)
+            {
+                var thisResult = HitObject.HitWindows.ResultFor(timeOffset);
+
+                if (thisResult == HitResult.Great)
+                    ApplyResult(r => r.Type = thisResult);
+
+                return;
+            }
+            */
+
             if (!userTriggered)
             {
                 if (!HitObject.HitWindows.CanBeHit(timeOffset))

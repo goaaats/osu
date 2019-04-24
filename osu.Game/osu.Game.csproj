@@ -21,5 +21,6 @@
     <PackageReference Include="NUnit" Version="3.11.0" />
     <PackageReference Include="SharpRaven" Version="2.4.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+    <PackageReference Include="WebSocketSharpFork" Version="1.0.4" />
   </ItemGroup>
 </Project>

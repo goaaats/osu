@@ -10,6 +10,7 @@ using osu.Framework.Extensions.TypeExtensions;
 using osu.Framework.Graphics.Primitives;
 using osu.Game.Audio;
 using osu.Game.Graphics;
+using osu.Game.Online.Websocket;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.Scoring;
@@ -218,6 +219,9 @@ namespace osu.Game.Rulesets.Objects.Drawables
                     State.Value = ArmedState.Hit;
                     break;
             }
+
+            if (Result.Type != HitResult.None)
+                TagModManager.Instance.ReportJudgement(HitObject, Result);
 
             OnNewResult?.Invoke(this, Result);
         }

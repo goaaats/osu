@@ -18,6 +18,7 @@ using osu.Game.Beatmaps;
 using osu.Game.Configuration;
 using osu.Game.Graphics.Containers;
 using osu.Game.Online.API;
+using osu.Game.Online.Websocket;
 using osu.Game.Overlays;
 using osu.Game.Rulesets;
 using osu.Game.Rulesets.Mods;
@@ -27,6 +28,7 @@ using osu.Game.Scoring;
 using osu.Game.Screens.Ranking;
 using osu.Game.Skinning;
 using osu.Game.Storyboards.Drawables;
+using osuTK.Input;
 
 namespace osu.Game.Screens.Play
 {
@@ -139,13 +141,15 @@ namespace osu.Game.Screens.Play
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre
                 },
+                /* TAG
                 new SkipOverlay(DrawableRuleset.GameplayStartTime)
                 {
                     RequestSeek = GameplayClockContainer.Seek
                 },
+                */
                 FailOverlay = new FailOverlay
                 {
-                    OnRetry = Restart,
+                    OnRetry = performUserRequestedExit, // TAG
                     OnQuit = performUserRequestedExit,
                 },
                 PauseOverlay = new PauseOverlay
@@ -159,6 +163,8 @@ namespace osu.Game.Screens.Play
                 {
                     Action = () =>
                     {
+                        return; // TAG
+
                         if (!this.IsCurrentScreen()) return;
 
                         fadeOut(true);
@@ -230,11 +236,15 @@ namespace osu.Game.Screens.Play
         {
             if (!this.IsCurrentScreen()) return;
 
+            TagModManager.Instance.Reset();
             this.Exit();
         }
 
         public void Restart()
         {
+            // TAG
+            return;
+
             if (!this.IsCurrentScreen()) return;
 
             sampleRestart?.Play();
@@ -373,7 +383,7 @@ namespace osu.Game.Screens.Play
             // cannot pause if we are already in a fail state
             && !HasFailed
             // cannot pause if already paused (or in a cooldown state) unless we are in a resuming state.
-            && (IsResuming || (GameplayClockContainer.IsPaused.Value == false && !pauseCooldownActive));
+            && (IsResuming || (GameplayClockContainer.IsPaused.Value == false && !pauseCooldownActive)) && false; // TAG
 
         private bool pauseCooldownActive =>
             lastPauseActionTime.HasValue && GameplayClockContainer.GameplayClock.CurrentTime < lastPauseActionTime + pause_cooldown;
@@ -498,5 +508,23 @@ namespace osu.Game.Screens.Play
         }
 
         #endregion
+
+        protected override bool OnKeyUp(KeyUpEvent e)
+        {
+            TagModManager.Instance.ReportKey(Key.Unknown);
+            return true;
+        }
+
+        protected override bool OnKeyDown(KeyDownEvent e)
+        {
+            TagModManager.Instance.ReportKey(e.Key);
+            return true;
+        }
+
+        protected override bool OnMouseMove(MouseMoveEvent e)
+        {
+            TagModManager.Instance.ReportMouseMovement(Playfield.Instance.ScreenToGamefieldSpace(e.ScreenSpaceLastMousePosition));
+            return true;
+        }
     }
 }

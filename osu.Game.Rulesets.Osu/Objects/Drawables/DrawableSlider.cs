@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Osu.Configuration;
@@ -45,6 +46,9 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables
 
             Container<DrawableSliderTick> ticks;
             Container<DrawableRepeatPoint> repeatPoints;
+
+            if (!HitObject.IsApplicableForLocalTagPlayer)
+                Colour = ColourInfo.SingleColour(new SRGBColour() { Linear = new Color4(255, 255, 255, 70) });
 
             InternalChildren = new Drawable[]
             {
@@ -167,6 +171,21 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables
 
         protected override void CheckForResult(bool userTriggered, double timeOffset)
         {
+            /*
+            if (!HitObject.IsApplicableForLocalTagPlayer)
+            {
+                var judgementsCount = NestedHitObjects.Count();
+                var judgementsHit = NestedHitObjects.Count(h => h.IsHit);
+
+                var hitFraction = (double)judgementsHit / judgementsCount;
+
+                if (hitFraction == 1 && HeadCircle.Result.Type == HitResult.Great)
+                    ApplyResult(r => r.Type = HitResult.Great);
+
+                return;
+            }
+            */
+
             if (userTriggered || Time.Current < slider.EndTime)
                 return;
 

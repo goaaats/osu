@@ -18,6 +18,9 @@ namespace osu.Game.Rulesets.UI
 {
     public abstract class Playfield : CompositeDrawable
     {
+        // i'm so sorry
+        public static Playfield Instance;
+
         /// <summary>
         /// The <see cref="DrawableHitObject"/> contained in this Playfield.
         /// </summary>
@@ -29,6 +32,11 @@ namespace osu.Game.Rulesets.UI
         /// A function that converts gamefield coordinates to screen space.
         /// </summary>
         public Func<Vector2, Vector2> GamefieldToScreenSpace => HitObjectContainer.ToScreenSpace;
+
+        /// <summary>
+        /// A function that converts gamefield coordinates to screen space.
+        /// </summary>
+        public Func<Vector2, Vector2> ScreenToGamefieldSpace => HitObjectContainer.ToLocalSpace;
 
         /// <summary>
         /// All the <see cref="DrawableHitObject"/>s contained in this <see cref="Playfield"/> and all <see cref="NestedPlayfields"/>.
@@ -55,6 +63,8 @@ namespace osu.Game.Rulesets.UI
             RelativeSizeAxes = Axes.Both;
 
             hitObjectContainerLazy = new Lazy<HitObjectContainer>(CreateHitObjectContainer);
+
+            Instance = this;
         }
 
         [Resolved]

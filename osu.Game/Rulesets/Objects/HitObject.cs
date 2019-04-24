@@ -19,6 +19,8 @@ namespace osu.Game.Rulesets.Objects
     /// </summary>
     public class HitObject
     {
+        public int Index { get; set; }
+
         /// <summary>
         /// A small adjustment to the start time of control points to account for rounding/precision errors.
         /// </summary>

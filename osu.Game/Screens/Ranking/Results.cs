@@ -18,6 +18,7 @@ using osu.Game.Graphics;
 using osu.Game.Graphics.UserInterface;
 using osu.Framework.Graphics.Shapes;
 using osu.Game.Graphics.Sprites;
+using osu.Game.Online.Websocket;
 using osu.Game.Scoring;
 
 namespace osu.Game.Screens.Ranking
@@ -57,6 +58,8 @@ namespace osu.Game.Screens.Ranking
 
         public override void OnEntering(IScreen last)
         {
+            TagModManager.Instance.Reset();
+
             base.OnEntering(last);
             ((BackgroundScreenBeatmap)Background).BlurAmount.Value = BACKGROUND_BLUR;
             Background.ScaleTo(1.1f, transition_time, Easing.OutQuint);

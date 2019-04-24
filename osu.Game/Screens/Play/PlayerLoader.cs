@@ -18,6 +18,7 @@ using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Graphics.UserInterface;
+using osu.Game.Online.Websocket;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Screens.Menu;
 using osu.Game.Screens.Play.HUD;
@@ -90,6 +91,13 @@ namespace osu.Game.Screens.Play
                     }
                 }
             });
+
+            if (!TagModManager.Instance.GamePrepared)
+            {
+                // TAG If no map is initialized, just go away
+                this.Exit();
+                return;
+            }
 
             loadNewPlayer();
         }
@@ -218,7 +226,15 @@ namespace osu.Game.Screens.Play
                         ValidForResume = false;
 
                         if (player.LoadedBeatmapSuccessfully)
+                        {
+                            TagModManager.Instance.NotifyGameReady();
+
+                            while (!TagModManager.Instance.GameReady)
+                            {
+                            }
+
                             this.Push(player);
+                        }
                         else
                             this.Exit();
                     });

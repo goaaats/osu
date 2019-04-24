@@ -10,6 +10,7 @@ using osu.Framework.Bindables;
 using osu.Framework.Logging;
 using osu.Game.Online.API;
 using osu.Game.Online.API.Requests;
+using osu.Game.Online.Websocket;
 using osu.Game.Users;
 
 namespace osu.Game.Online.Chat
@@ -207,6 +208,10 @@ namespace osu.Game.Online.Chat
 
                 case "help":
                     target.AddNewMessages(new InfoMessage("Supported commands: /help, /me [action]"));
+                    break;
+
+                case "tm":
+                    TagModManager.Instance.HandleChatCommand(parameters, target);
                     break;
 
                 default:
